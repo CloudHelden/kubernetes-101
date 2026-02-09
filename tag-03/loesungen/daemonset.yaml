@@ -1,0 +1,23 @@
+# Übung 3.7: DaemonSet
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: node-logger
+spec:
+  selector:
+    matchLabels:
+      app: node-logger
+  template:
+    metadata:
+      labels:
+        app: node-logger
+    spec:
+      containers:
+      - name: logger
+        image: busybox
+        command: ["/bin/sh", "-c"]
+        args:
+          - while true; do
+              echo "$(date) - Running on $(hostname)";
+              sleep 30;
+            done

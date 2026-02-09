@@ -1,0 +1,25 @@
+# Übung 6.5: Test-Pods für Network Policy
+apiVersion: v1
+kind: Pod
+metadata:
+  name: web
+  labels:
+    app: web
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    ports:
+    - containerPort: 80
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: client
+  labels:
+    app: client
+spec:
+  containers:
+  - name: busybox
+    image: busybox
+    command: ["/bin/sh", "-c", "sleep 3600"]

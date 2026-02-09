@@ -1,0 +1,12 @@
+# Übung 4.1: ClusterIP Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-service
+spec:
+  selector:
+    app: web
+  ports:
+  - port: 80
+    targetPort: 80
+  type: ClusterIP

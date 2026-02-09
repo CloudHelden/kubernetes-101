@@ -1,0 +1,14 @@
+# NodePort Service (extern erreichbar über Node-IP:Port)
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp-nodeport
+spec:
+  type: NodePort
+  selector:
+    app: webapp
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+    nodePort: 30080  # Port 30000-32767

@@ -1,0 +1,13 @@
+# Übung 6.7: Resource Quota
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: compute-quota
+  namespace: limited
+spec:
+  hard:
+    requests.cpu: "1"
+    requests.memory: 1Gi
+    limits.cpu: "2"
+    limits.memory: 2Gi
+    pods: "5"

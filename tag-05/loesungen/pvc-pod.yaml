@@ -1,0 +1,17 @@
+# Übung 5.7: Pod mit PVC
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pvc-pod
+spec:
+  containers:
+  - name: app
+    image: nginx
+    volumeMounts:
+    - name: data
+      mountPath: /usr/share/nginx/html
+
+  volumes:
+  - name: data
+    persistentVolumeClaim:
+      claimName: local-pvc

@@ -1,0 +1,29 @@
+# Secrets - NIE committen! (außer Beispieldateien)
+# Echte Secrets in Produktion niemals in Git!
+*.key
+*.crt
+*.pem
+.env
+.env.*
+credentials.json
+kubeconfig.yaml
+
+# Kubernetes
+kubeconfig
+*.kubeconfig
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Temporäre Dateien
+*.tmp
+*.bak
+*.log

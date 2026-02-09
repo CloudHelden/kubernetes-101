@@ -1,0 +1,30 @@
+# Übung 2.7: Pod mit allen drei Probe-Typen
+apiVersion: v1
+kind: Pod
+metadata:
+  name: all-probes-demo
+spec:
+  containers:
+  - name: app
+    image: nginx
+    ports:
+    - containerPort: 80
+
+    startupProbe:
+      httpGet:
+        path: /
+        port: 80
+      failureThreshold: 30
+      periodSeconds: 2
+
+    livenessProbe:
+      httpGet:
+        path: /
+        port: 80
+      periodSeconds: 10
+
+    readinessProbe:
+      httpGet:
+        path: /
+        port: 80
+      periodSeconds: 5

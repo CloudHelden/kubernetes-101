@@ -1,0 +1,35 @@
+# Übung 6.3: Security Context
+apiVersion: v1
+kind: Pod
+metadata:
+  name: secure-pod
+spec:
+  securityContext:
+    runAsUser: 1000
+    runAsGroup: 3000
+    fsGroup: 2000
+
+  containers:
+  - name: secure-container
+    image: busybox
+    command: ["/bin/sh", "-c"]
+    args:
+      - id;
+        echo "User ID:" $(id -u);
+        echo "Group ID:" $(id -g);
+        touch /data/testfile;
+        ls -la /data;
+        sleep 3600
+    securityContext:
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+      capabilities:
+        drop:
+          - ALL
+    volumeMounts:
+    - name: data
+      mountPath: /data
+
+  volumes:
+  - name: data
+    emptyDir: {}

@@ -1,0 +1,25 @@
+# Übung 5.3: ConfigMap als Umgebungsvariablen
+apiVersion: v1
+kind: Pod
+metadata:
+  name: configmap-env-pod
+spec:
+  containers:
+  - name: app
+    image: busybox
+    command: ["/bin/sh", "-c", "env | grep -E 'APP_|LOG_|DB_' && sleep 3600"]
+    env:
+    - name: APP_NAME
+      valueFrom:
+        configMapKeyRef:
+          name: app-settings
+          key: APP_NAME
+    - name: LOG_LEVEL
+      valueFrom:
+        configMapKeyRef:
+          name: app-settings
+          key: LOG_LEVEL
+    envFrom:
+    - configMapRef:
+        name: app-config
+      prefix: DB_

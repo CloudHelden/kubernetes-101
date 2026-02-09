@@ -1,0 +1,31 @@
+# Übung 2.2: Multi-Container Pod (Sidecar)
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sidecar-demo
+spec:
+  containers:
+  - name: writer
+    image: busybox
+    command: ["/bin/sh", "-c"]
+    args:
+      - while true; do
+          echo "$(date) - Hello from writer" >> /data/log.txt;
+          sleep 5;
+        done
+    volumeMounts:
+    - name: shared-data
+      mountPath: /data
+
+  - name: reader
+    image: busybox
+    command: ["/bin/sh", "-c"]
+    args:
+      - tail -f /data/log.txt
+    volumeMounts:
+    - name: shared-data
+      mountPath: /data
+
+  volumes:
+  - name: shared-data
+    emptyDir: {}

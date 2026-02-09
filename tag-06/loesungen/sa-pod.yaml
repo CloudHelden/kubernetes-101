@@ -1,0 +1,11 @@
+# Übung 6.1: Pod mit ServiceAccount
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sa-demo-pod
+spec:
+  serviceAccountName: app-service-account
+  containers:
+  - name: app
+    image: busybox
+    command: ["/bin/sh", "-c", "sleep 3600"]

@@ -1,0 +1,96 @@
+# Sicheres Deployment mit allen Best Practices
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: secure-app-sa
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: secure-app
+  labels:
+    app: secure-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: secure-app
+  template:
+    metadata:
+      labels:
+        app: secure-app
+    spec:
+      serviceAccountName: secure-app-sa
+
+      # Pod-Level Security
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 3000
+        fsGroup: 2000
+
+      containers:
+      - name: app
+        image: nginxinc/nginx-unprivileged:1.25
+        ports:
+        - containerPort: 8080
+
+        # Container-Level Security
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+              - ALL
+
+        # Ressourcen-Limits (immer setzen!)
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "200m"
+            memory: "256Mi"
+
+        # Health Checks
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 10
+
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+
+        # Volumes für schreibbare Verzeichnisse
+        volumeMounts:
+        - name: tmp
+          mountPath: /tmp
+        - name: cache
+          mountPath: /var/cache/nginx
+        - name: run
+          mountPath: /var/run
+
+      volumes:
+      - name: tmp
+        emptyDir: {}
+      - name: cache
+        emptyDir: {}
+      - name: run
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: secure-app-service
+spec:
+  selector:
+    app: secure-app
+  ports:
+  - port: 80
+    targetPort: 8080

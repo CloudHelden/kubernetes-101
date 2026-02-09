@@ -1,0 +1,23 @@
+# Übung 2.8: Umgebungsvariablen
+apiVersion: v1
+kind: Pod
+metadata:
+  name: env-demo
+spec:
+  containers:
+  - name: app
+    image: busybox
+    command: ["/bin/sh", "-c", "env && sleep 3600"]
+    env:
+    - name: APP_NAME
+      value: "MeineApp"
+    - name: APP_VERSION
+      value: "1.0.0"
+    - name: POD_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.name
+    - name: POD_IP
+      valueFrom:
+        fieldRef:
+          fieldPath: status.podIP

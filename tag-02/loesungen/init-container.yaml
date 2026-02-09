@@ -1,0 +1,33 @@
+# Übung 2.3: Init-Container
+apiVersion: v1
+kind: Pod
+metadata:
+  name: init-demo
+spec:
+  initContainers:
+  - name: init-setup
+    image: busybox
+    command: ['sh', '-c']
+    args:
+      - echo "Initializing...";
+        sleep 10;
+        echo "Init complete!" > /work/status.txt
+    volumeMounts:
+    - name: workdir
+      mountPath: /work
+
+  containers:
+  - name: main
+    image: busybox
+    command: ['sh', '-c']
+    args:
+      - cat /work/status.txt;
+        echo "Main container running";
+        sleep 3600
+    volumeMounts:
+    - name: workdir
+      mountPath: /work
+
+  volumes:
+  - name: workdir
+    emptyDir: {}

@@ -1,0 +1,18 @@
+# Übung 5.2: ConfigMap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  database.host: "mysql.default.svc.cluster.local"
+  database.port: "3306"
+  feature.new_ui: "true"
+
+  nginx.conf: |
+    server {
+        listen 80;
+        server_name localhost;
+        location / {
+            root /usr/share/nginx/html;
+        }
+    }

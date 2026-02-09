@@ -1,0 +1,23 @@
+# Übung 2.5: Fehlerhafte Liveness Probe
+apiVersion: v1
+kind: Pod
+metadata:
+  name: failing-liveness
+spec:
+  containers:
+  - name: app
+    image: busybox
+    command: ["/bin/sh", "-c"]
+    args:
+      - touch /tmp/healthy;
+        sleep 30;
+        rm /tmp/healthy;
+        sleep 600
+
+    livenessProbe:
+      exec:
+        command:
+        - cat
+        - /tmp/healthy
+      initialDelaySeconds: 5
+      periodSeconds: 5

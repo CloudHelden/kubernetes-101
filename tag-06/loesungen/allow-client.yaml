@@ -1,0 +1,19 @@
+# Übung 6.6: Selektiver Zugriff
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-client-to-web
+spec:
+  podSelector:
+    matchLabels:
+      app: web
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: client
+    ports:
+    - protocol: TCP
+      port: 80

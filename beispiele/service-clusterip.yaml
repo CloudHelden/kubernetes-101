@@ -1,0 +1,13 @@
+# ClusterIP Service (intern erreichbar)
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp-service
+spec:
+  type: ClusterIP
+  selector:
+    app: webapp
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80

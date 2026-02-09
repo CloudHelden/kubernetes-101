@@ -1,0 +1,37 @@
+# Pod mit Ressourcen-Limits und Probes
+apiVersion: v1
+kind: Pod
+metadata:
+  name: resource-pod
+  labels:
+    app: webapp
+spec:
+  containers:
+  - name: app
+    image: nginx:1.25
+    ports:
+    - containerPort: 80
+
+    # Ressourcen-Management
+    resources:
+      requests:
+        memory: "128Mi"
+        cpu: "100m"
+      limits:
+        memory: "256Mi"
+        cpu: "500m"
+
+    # Health Checks
+    livenessProbe:
+      httpGet:
+        path: /
+        port: 80
+      initialDelaySeconds: 10
+      periodSeconds: 10
+
+    readinessProbe:
+      httpGet:
+        path: /
+        port: 80
+      initialDelaySeconds: 5
+      periodSeconds: 5

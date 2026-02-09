@@ -1,0 +1,29 @@
+# Übung 5.1: emptyDir Volume
+apiVersion: v1
+kind: Pod
+metadata:
+  name: shared-volume-pod
+spec:
+  containers:
+  - name: producer
+    image: busybox
+    command: ["/bin/sh", "-c"]
+    args:
+      - while true; do
+          echo "$(date) - Neue Nachricht" >> /shared/messages.txt;
+          sleep 5;
+        done
+    volumeMounts:
+    - name: shared-data
+      mountPath: /shared
+
+  - name: consumer
+    image: busybox
+    command: ["/bin/sh", "-c", "tail -f /shared/messages.txt"]
+    volumeMounts:
+    - name: shared-data
+      mountPath: /shared
+
+  volumes:
+  - name: shared-data
+    emptyDir: {}

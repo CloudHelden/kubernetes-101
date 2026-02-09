@@ -1,0 +1,14 @@
+# Einfacher Pod mit einem Container
+apiVersion: v1
+kind: Pod
+metadata:
+  name: basic-pod
+  labels:
+    app: example
+    environment: development
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.25
+    ports:
+    - containerPort: 80

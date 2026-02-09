@@ -1,0 +1,14 @@
+# Übung 6.4: Pod mit runAsNonRoot
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nonroot-pod
+spec:
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 101
+  containers:
+  - name: nginx
+    image: nginxinc/nginx-unprivileged
+    ports:
+    - containerPort: 8080

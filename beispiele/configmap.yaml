@@ -1,0 +1,33 @@
+# ConfigMap mit verschiedenen Datentypen
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  # Einfache Key-Value-Paare
+  APP_NAME: "MeineApp"
+  LOG_LEVEL: "info"
+  MAX_CONNECTIONS: "100"
+
+  # Mehrzeilige Konfiguration
+  database.properties: |
+    host=mysql.default.svc.cluster.local
+    port=3306
+    name=mydb
+    pool_size=10
+
+  nginx.conf: |
+    server {
+        listen 80;
+        server_name localhost;
+
+        location / {
+            root /usr/share/nginx/html;
+            index index.html;
+        }
+
+        location /health {
+            return 200 'OK';
+            add_header Content-Type text/plain;
+        }
+    }

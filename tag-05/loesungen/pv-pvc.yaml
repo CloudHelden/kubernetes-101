@@ -1,0 +1,26 @@
+# Übung 5.7: Persistent Volume & Claim
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: local-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: manual
+  hostPath:
+    path: /data/pv-test
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: local-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi
+  storageClassName: manual

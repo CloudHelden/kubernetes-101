@@ -1,0 +1,21 @@
+# Übung 5.4: ConfigMap als Volume
+apiVersion: v1
+kind: Pod
+metadata:
+  name: configmap-volume-pod
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    volumeMounts:
+    - name: config-volume
+      mountPath: /etc/nginx/conf.d
+      readOnly: true
+
+  volumes:
+  - name: config-volume
+    configMap:
+      name: app-config
+      items:
+      - key: nginx.conf
+        path: default.conf
